@@ -1,0 +1,6 @@
+# To prevent caching game files. 
+# Requires `sudo a2enmod headers`, `sudo a2enmod expires`, `apache2 service restart`
+### Apply a Cache-Control header
+<FilesMatch "\.(html|js|jpg|jpeg|png|gif)$">
+Header append Cache-Control "no-cache, no-store, must-revalidate"
+</FilesMatch>
