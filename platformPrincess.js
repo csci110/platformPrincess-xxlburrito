@@ -113,7 +113,7 @@ class Door extends Sprite {
 let exit = new Door();
 exit.name = "The exit door";
 
-class Spider {
+class Spider extends Sprite {
     constructor(x, y) {
         super();
         this.setImage("spider.png");
@@ -125,9 +125,80 @@ class Spider {
         this.playAnimation("creep", true);
     }
     handleGameLoop() {
-        
+        if(this.y <= ann.y+48) { //this.x component?
+            this.angle = 270;
+        }
+        if(this.y >= ann.y) {
+            this.angle = 90;
+        }
+    }
+    handleCollision(otherSprite) {  
+        if (otherSprite === ann) {
+            let horizontalOffset = this.x - otherSprite.x;
+            let verticalOffset = this.y - otherSprite.y;
+            if (Math.abs(horizontalOffset) < this.width / 2 && 
+                Math.abs(verticalOffset) < 30) {
+                    otherSprite.y = otherSprite.y + 1;
+            }
+        }
+        return false;
     }
 }
 
 new Spider(220, 225);
 new Spider(550, 200);
+
+class Bat extends Sprite {
+    constructor(x, y) {
+        super();
+        this.x = this.startX = x;
+        this.y = this.startY = y;
+        this.setImage("bat.png");
+        this.accelerateOnBounce = false;
+        this.name = "A scary bat";
+        this.defineAnimation("flap", 0, 1);
+        this.playAnimation("flap", true);
+        this.attackSpeed = 300;
+        this.speed = this.normalSpeed = 20;
+        this.angle = 45 + Math.round(Math.random() * 3) * 90;
+        this.angleTimer = 0;
+        
+    }
+    attack() {
+        this.speed = this.attackSpeed;
+        this.aimFor(ann.x, ann.y);
+    }
+    handleCollision(otherSprite) {
+        if (otherSprite === ann) {
+            let horizontalOffset = this.x - otherSprite.x;
+            let verticalOffset = this.y - otherSprite.y;
+            if (Math.abs(horizontalOffset) < this.width / 2 && 
+                Math.abs(verticalOffset) < 30) {
+                    otherSprite.y = otherSprite.y + 1;
+            }
+        }
+        return false;
+    }
+    // handleGameLoop() {
+    //     if(Math.random() <= 0.001) {
+    //         Bat.attack(); // get this working
+    //     }
+    //     if(!Bat.attack) {
+            
+    //     }
+    // }
+    handleBoundaryContact() {
+        if (Bat.x < 0) {
+            Bat.x = 0;
+        }
+        if (Bat.x > game.displayHeight) {
+            Bat.x = Bat.startX;
+            Bat.speed = Bat.normalSpeed;
+            Bat.angle = 225;
+        }
+    }
+}
+
+
+let leftBat = new Bat(200, 100);
+let rightBat = new Bat(500, 75);
