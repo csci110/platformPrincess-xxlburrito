@@ -99,7 +99,7 @@ class Door extends Sprite {
         super();
         this.setImage("door.png");
         this.x = game.displayWidth - 48;
-        this.y = finishPlatform - 2 * 48;
+        this.y = finishPlatform.y - 2 * 48;
         this.accelerateOnBounce = false;
     }
     handleCollision(otherSprite) {
@@ -125,7 +125,7 @@ class Spider extends Sprite {
         this.playAnimation("creep", true);
     }
     handleGameLoop() {
-        if(this.y <= ann.y+48) { //this.x component?
+        if(this.y <= ann.y-48) { 
             this.angle = 270;
         }
         if(this.y >= ann.y) {
@@ -179,22 +179,30 @@ class Bat extends Sprite {
         }
         return false;
     }
-    // handleGameLoop() {
-    //     if(Math.random() <= 0.001) {
-    //         Bat.attack(); // get this working
-    //     }
-    //     if(!Bat.attack) {
-            
-    //     }
-    // }
-    handleBoundaryContact() {
-        if (Bat.x < 0) {
-            Bat.x = 0;
+    handleGameLoop() {
+        if(Math.random() <= 0.005) {
+            this.attack();
         }
-        if (Bat.x > game.displayHeight) {
-            Bat.x = Bat.startX;
-            Bat.speed = Bat.normalSpeed;
-            Bat.angle = 225;
+        if(this.speed === Math.round(this.normalSpeed)) {
+            let now = game.getTime();
+                if(now-this.angleTimer > 3) {
+                    if(Math.random() > 0.5) {
+                    this.angle = this.angle + 180;
+                }
+                if(Math.random() <= 0.5) {
+                    this.angle = this.angle + 90;
+                }
+            }
+        }
+    }
+    handleBoundaryContact() {
+        if (this.y < 0) {
+            this.y = 0;
+        }
+        if (this.y > game.displayHeight) {
+            this.y = Bat.startY;
+            this.speed = this.normalSpeed;
+            this.angle = 225;
         }
     }
 }
