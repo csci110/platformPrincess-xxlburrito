@@ -10,3 +10,4 @@ game.preloadImage("ann.png", 48, 48);
 game.preloadImage("bat.png", 48, 48);
 game.preloadImage("spider.png", 48, 48);
 game.preloadImage("horizontalWall.png");
+game.preloadImage("cave.png");

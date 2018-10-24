@@ -1,6 +1,6 @@
 import {game, Sprite} from "./sgc/sgc.js";
 
-// game.setBackground();
+game.setBackground("cave.png");
 
 class Wall extends Sprite {
     constructor(x, y, name, image) {
@@ -100,8 +100,7 @@ class Princess extends Sprite {
         }
     }
     handleBoundaryContact() {
-        game.end('Princess Ann has drowned.\n\nBetter luck next time.');
-        this.true;
+        game.end('Princess Ann has fallen.\n\nBetter luck next time.');
     }
 }
 
